@@ -38,8 +38,12 @@ type ILogin = {
   password: string;
 };
 
+type IIsBusiness = {
+  isBusiness: boolean;
+};
+
 type IJWTPayload = {
   email: string;
 };
 
-export { IUser, IName, IAddress, IImage, ILogin, IJWTPayload };
+export { IUser, IName, IAddress, IImage, ILogin, IJWTPayload, IIsBusiness };

@@ -29,10 +29,9 @@ app.use("/api/v1/cards", cardsRouter);
 app.use(errorHandler);
 app.use(notFound);
 
+const PORT = process.env.PORT ?? 8080;
 
-const PORT = process.env.PORT ?? 8081;
-
-app.listen(process.env.PORT, ()=>{
+app.listen(process.env.PORT, () => {
   // callback when the app is running:
   Logger.info(`App is running: http://localhost:${PORT}`);
 });

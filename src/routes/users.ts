@@ -1,66 +1,80 @@
 import { Router } from "express";
-import { ILogin, IUser } from "../@types/user";
+import { IIsBusiness, ILogin, IUser } from "../@types/user";
 import { User } from "../database/model/user";
-import { validateLogin, validateRegistration } from "../middleware/validation";
+import {
+  validateIsBusiness,
+  validateLogin,
+  validateRegistration,
+} from "../middleware/validation";
 import { createUser, validateUser } from "../service/user-service";
 import { isAdmin } from "../middleware/is-admin";
 import { isAdminOrUser } from "../middleware/is-admin-or-user";
 import { isUser } from "../middleware/is-user";
 import { auth } from "../service/auth-service";
 import { Logger } from "../logs/logger";
+import { BizCardsError } from "../error/biz-cards-error";
 
 const router = Router();
 
+//GET all users
 router.get("/", isAdmin, async (req, res, next) => {
   try {
     const allUsers = await User.find();
-
     res.json(allUsers);
   } catch (e) {
     next(e);
   }
 });
 
+//PUT update user
 router.put("/:id", isUser, validateRegistration, async (req, res, next) => {
-  //hash the password:
-  req.body.password = await auth.hashPassword(req.body.password);
+  try {
+    req.body.password = await auth.hashPassword(req.body.password);
 
-  const savedUser = await User.findByIdAndUpdate(
-    { _id: req.params.id },
-    req.body,
-    { new: true }
-  );
-  //not null check
-  //remove the password
-  res.json(savedUser);
+    const savedUser = (await User.findByIdAndUpdate(
+      { _id: req.params.id },
+      req.body,
+      { new: true }
+    ).lean()) as IUser;
+    if (!savedUser) {
+      throw new BizCardsError("User does not update", 401);
+    }
+    const { password, ...rest } = savedUser;
+    res.json(rest);
+  } catch (err) {
+    next(err);
+  }
 });
 
+//GET user by id
 router.get("/:id", isAdminOrUser, async (req, res, next) => {
   try {
-    const { id } = req.params;
-
-    const user = (await User.findById(id).lean()) as IUser;
-
-    const { password, ...rest } = user;
-    return res.json({ user: rest });
+    if (!req.user) {
+      throw new BizCardsError("User does not exist", 401);
+    }
+    const { password, ...rest } = req.user;
+    return res.json(rest);
   } catch (e) {
     next(e);
   }
 });
 
+//DELETE user
 router.delete("/:id", isAdminOrUser, async (req, res, next) => {
   try {
     const { id } = req.params;
-    const deleteUser = await User.findOneAndDelete({ _id: id });
+    const deleteUser = (await User.findOneAndDelete({
+      _id: id,
+    }).lean()) as IUser;
     Logger.verbose("deleted the user");
-    return res.json(deleteUser);
+    const { password, ...rest } = deleteUser;
+    return res.json(rest);
   } catch (e) {
     next(e);
   }
 });
 
-//email, password + userdetails
-//password -> hsah
+//POST new user
 router.post("/", validateRegistration, async (req, res, next) => {
   try {
     const saved = await createUser(req.body as IUser);
@@ -70,32 +84,34 @@ router.post("/", validateRegistration, async (req, res, next) => {
   }
 });
 
-//email, password
-//JWT
+//POST login
 router.post("/login", validateLogin, async (req, res, next) => {
   try {
-    //check the request:
     const { email, password } = req.body as ILogin;
-    try {
-      //call the service:
-      const jwt = await validateUser(email, password);
-      //response
-      res.json(jwt);
-    } catch (e) {
-      //email / password are invalid
-      //save data to database: Date ['', '', '']
-      //res.json /or throw
-    }
-
-   
+    const jwt = await validateUser(email, password);
+    res.json(jwt);
   } catch (e) {
     next(e);
   }
 });
 
-export { router as usersRouter };
+//PATCH update user isBusiness status
+router.patch("/:id", validateIsBusiness, isUser, async (req, res, next) => {
+  try {
+    const { isBusiness } = req.body as IIsBusiness;
+    const updateUser = (await User.findByIdAndUpdate(
+      { _id: req.params.id },
+      { isBusiness: isBusiness },
+      { new: true }
+    ).lean()) as IUser;
+    if (!updateUser) {
+      throw new BizCardsError("User does not update", 401);
+    }
+    const { password, ...rest } = updateUser;
+    res.json(rest);
+  } catch (err) {
+    next(err);
+  }
+});
 
-//Database:
-//connect, mongo-schema, model
-//Router:
-//validate body (joi-schema), other route logic
+export { router as usersRouter };

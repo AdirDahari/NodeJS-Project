@@ -3,6 +3,7 @@ import { auth } from "../service/auth-service";
 import { User } from "../database/model/user";
 import { extractToken } from "./is-admin";
 import { BizCardsError } from "../error/biz-cards-error";
+import { IUser } from "../@types/user";
 
 const isAdminOrUser: RequestHandler = async (req, res, next) => {
   try {
@@ -11,11 +12,12 @@ const isAdminOrUser: RequestHandler = async (req, res, next) => {
     const { email } = auth.verifyJWT(token);
 
     //get user from database:
-    const user = await User.findOne({ email });
+    const user = (await User.findOne({ email }).lean()) as IUser;
+    req.user = user;
 
     if (!user) throw new BizCardsError("User does not exist", 401);
 
-    if (id == user.id) return next();
+    if (id == user._id) return next();
 
     if (user.isAdmin) return next();
 

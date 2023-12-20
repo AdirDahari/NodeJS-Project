@@ -28,4 +28,4 @@ const validateUser = async (email: string, password: string) => {
   return { jwt };
 };
 
-export {createUser, validateUser}
+export { createUser, validateUser };
