@@ -19,7 +19,7 @@ const connect = async () => {
     //blue:
     Logger.debug("Database Connected");
     //init the database:
-    // await initDB();
+    await initDB();
   } catch (err) {
     Logger.error("Error Connecting to database", err);
   }
