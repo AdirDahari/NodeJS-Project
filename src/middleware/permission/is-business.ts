@@ -1,8 +1,8 @@
 import { RequestHandler, Request } from "express";
-import { BizCardsError } from "../error/biz-cards-error";
-import { auth } from "../service/auth-service";
-import { User } from "../database/model/user";
-import { extractToken } from "./is-admin";
+import { BizCardsError } from "../../error/biz-cards-error";
+import { auth } from "../../service/auth-service";
+import { User } from "../../database/model/user";
+import { extractToken } from "../validate-token";
 
 const isBusiness: RequestHandler = async (req, res, next) => {
   try {

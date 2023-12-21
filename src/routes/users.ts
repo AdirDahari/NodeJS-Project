@@ -7,9 +7,9 @@ import {
   validateRegistration,
 } from "../middleware/validation";
 import { createUser, validateUser } from "../service/user-service";
-import { isAdmin } from "../middleware/is-admin";
-import { isAdminOrUser } from "../middleware/is-admin-or-user";
-import { isUser } from "../middleware/is-user";
+import { isAdmin } from "../middleware/permission/is-admin";
+import { isAdminOrUser } from "../middleware/permission/is-admin-or-user";
+import { isUser } from "../middleware/permission/is-user";
 import { auth } from "../service/auth-service";
 import { Logger } from "../logs/logger";
 import { BizCardsError } from "../error/biz-cards-error";

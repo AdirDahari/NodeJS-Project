@@ -1,7 +1,7 @@
-import { joiCardSchema } from "../../joi/card.joi";
-import { joiIsBusiness } from "../../joi/isBusiness.joi";
-import { joiLoginSchema } from "../../joi/login.joi";
-import { joiUserSchema } from "../../joi/user.joi";
+import { joiCardSchema } from "../../validation/card.joi";
+import { joiIsBusiness } from "../../validation/isBusiness.joi";
+import { joiLoginSchema } from "../../validation/login.joi";
+import { joiUserSchema } from "../../validation/user.joi";
 import { validateSchema } from "./validate-schema";
 
 export const validateRegistration = validateSchema(joiUserSchema);

@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { isBusiness } from "../middleware/is-business";
+import { isBusiness } from "../middleware/permission/is-business";
 import { validateCard } from "../middleware/validation";
 import { createCard } from "../service/card-service";
 import { ICardInput } from "../@types/card";
@@ -52,7 +52,6 @@ router.get("/:id", async (req, res, next) => {
     const { id } = req.params;
 
     const card = await Card.findById(id);
-    
 
     return res.json(card);
   } catch (e) {
