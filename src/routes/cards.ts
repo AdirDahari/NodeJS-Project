@@ -9,7 +9,7 @@ import { validateToken } from "../middleware/validate-token";
 
 const router = Router();
 
-//body + JWT(userID)
+//POST Create card
 router.post("/", isBusiness, validateCard, async (req, res, next) => {
   try {
     const userId = req.user?._id;
@@ -25,6 +25,7 @@ router.post("/", isBusiness, validateCard, async (req, res, next) => {
   }
 });
 
+//GET All cards
 router.get("/", async (req, res, next) => {
   try {
     //move to service
@@ -35,6 +36,7 @@ router.get("/", async (req, res, next) => {
   }
 });
 
+//GET My cards
 router.get("/my-cards", validateToken, async (req, res, next) => {
   try {
     const userId = req.user?._id!;
@@ -47,6 +49,7 @@ router.get("/my-cards", validateToken, async (req, res, next) => {
   }
 });
 
+//GET Card by id
 router.get("/:id", async (req, res, next) => {
   try {
     const { id } = req.params;
