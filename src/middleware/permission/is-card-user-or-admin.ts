@@ -19,9 +19,9 @@ const isCardUserOrAdmin: RequestHandler = async (req, res, next) => {
     if (!card) {
       throw new BizCardsError("Card does not exist", 401);
     }
+    console.log(user.isAdmin, card?.userId, user?.id);
 
-    if (user.isAdmin && card?.userId === user?.id) {
-      req.card = card as ICard;
+    if (user.isAdmin || card?.userId === user?.id) {
       return next();
     }
     throw new BizCardsError(

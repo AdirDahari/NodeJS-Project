@@ -8,7 +8,7 @@ const schema = Joi.object<ICard>({
   description: Joi.string().min(1).max(500).required(),
   phone: Joi.string().min(1).max(50).required(),
   email: Joi.string().email().min(5).max(255).required(),
-  web: Joi.string().uri().min(5).max(255).required(),
+  web: Joi.string().min(5).max(255),
   address: Joi.object<IAddress>({
     street: Joi.string().min(1).max(100).required(),
     city: Joi.string().min(1).max(100).required(),

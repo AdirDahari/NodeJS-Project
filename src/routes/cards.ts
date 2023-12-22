@@ -84,7 +84,8 @@ router.put("/:id", validateCard, isCardUser, async (req, res, next) => {
 router.patch("/:id", validateToken, async (req, res, next) => {
   try {
     const { likes, _id } = (await Card.findById(req.params.id)) as ICard;
-    const indexId = likes.indexOf(req.params.id);
+    const indexId = likes.indexOf(req.user?._id!);
+
     if (indexId === -1) {
       likes.push(req.user?._id!);
       const updatedLikes = (await Card.findByIdAndUpdate(

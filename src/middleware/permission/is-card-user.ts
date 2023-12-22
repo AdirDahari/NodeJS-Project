@@ -22,7 +22,6 @@ const isCardUser: RequestHandler = async (req, res, next) => {
     }
 
     if (card?.userId === user?.id) {
-      req.card = card as ICard;
       return next();
     }
     throw new BizCardsError("Only user who create the card can update", 401);

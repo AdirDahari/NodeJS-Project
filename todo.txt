@@ -2,7 +2,7 @@ Logger - where and when put Logger
 Status - put currect status to all res
 Update user PUT request - ?change email and password and isBusiness and admin (make a new schema)
 Joi and Schema - make sure validation currect
-
+BizNumber - uuid (update readme)
 
 
 
