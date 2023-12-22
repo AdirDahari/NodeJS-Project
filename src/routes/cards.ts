@@ -2,10 +2,14 @@ import { Router } from "express";
 import { isBusiness } from "../middleware/permission/is-business";
 import { validateCard } from "../middleware/validation";
 import { createCard } from "../service/card-service";
-import { ICardInput } from "../@types/card";
+import { ICard, ICardInput } from "../@types/card";
 import { BizCardsError } from "../error/biz-cards-error";
 import { Card } from "../database/model/card";
 import { validateToken } from "../middleware/validate-token";
+import { isUser } from "../middleware/permission/is-user";
+import { isCardUser } from "../middleware/permission/is-card-user";
+import { isCardUserOrAdmin } from "../middleware/permission/is-card-user-or-admin";
+import { Logger } from "../logs/logger";
 
 const router = Router();
 
@@ -19,7 +23,7 @@ router.post("/", isBusiness, validateCard, async (req, res, next) => {
     }
     const savedCard = await createCard(req.body as ICardInput, userId);
 
-    res.json({ card: savedCard });
+    return res.json({ card: savedCard });
   } catch (e) {
     next(e);
   }
@@ -59,6 +63,59 @@ router.get("/:id", async (req, res, next) => {
     return res.json(card);
   } catch (e) {
     next(e);
+  }
+});
+
+//PUT Update user
+router.put("/:id", validateCard, isCardUser, async (req, res, next) => {
+  try {
+    const updateCard = await Card.findByIdAndUpdate(
+      { _id: req.params.id },
+      req.body,
+      { new: true }
+    );
+    return res.json(updateCard);
+  } catch (err) {
+    next(err);
+  }
+});
+
+//PATCH Update likes card
+router.patch("/:id", validateToken, async (req, res, next) => {
+  try {
+    const { likes, _id } = (await Card.findById(req.params.id)) as ICard;
+    const indexId = likes.indexOf(req.params.id);
+    if (indexId === -1) {
+      likes.push(req.user?._id!);
+      const updatedLikes = (await Card.findByIdAndUpdate(
+        { _id: _id },
+        { likes: likes },
+        { new: true }
+      ).lean()) as ICard;
+      return res.json(updatedLikes);
+    }
+    likes.splice(indexId, 1);
+    const updatedLikes = (await Card.findByIdAndUpdate(
+      { _id: _id },
+      { likes: likes },
+      { new: true }
+    ).lean()) as ICard;
+    return res.json(updatedLikes);
+  } catch (err) {
+    next(err);
+  }
+});
+
+//DELETE Card by id
+router.delete("/:id", isCardUserOrAdmin, async (req, res, next) => {
+  try {
+    const deletedCard = (await Card.deleteOne({
+      _id: req.params.id,
+    }).lean()) as ICard;
+    Logger.verbose("deleted the card");
+    res.json(deletedCard);
+  } catch (err) {
+    next(err);
   }
 });
 
