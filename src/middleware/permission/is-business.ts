@@ -1,4 +1,4 @@
-import { RequestHandler, Request } from "express";
+import { RequestHandler } from "express";
 import { BizCardsError } from "../../error/biz-cards-error";
 import { auth } from "../../service/auth-service";
 import { User } from "../../database/model/user";
@@ -9,7 +9,6 @@ const isBusiness: RequestHandler = async (req, res, next) => {
     const token = extractToken(req);
     const { email } = auth.verifyJWT(token);
 
-    //get user from database
     const user = await User.findOne({ email });
 
     if (!user) {

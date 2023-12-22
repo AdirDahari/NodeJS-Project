@@ -15,7 +15,7 @@ const isAdmin: RequestHandler = async (req, res, next) => {
     if (isAdmin) {
       return next();
     }
-    return res.status(401).json({ message: "Must be admin" });
+    throw new BizCardsError("Must be admin", 401);
   } catch (err) {
     next(err);
   }

@@ -1,6 +1,4 @@
 import { Request } from "express";
-// add user to express request
-
 import { IUser } from "./user";
 import { ICard } from "./card";
 

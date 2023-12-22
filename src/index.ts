@@ -15,16 +15,14 @@ connect();
 const app = express();
 app.use(
   cors({
-    // allow my client side
-    origin: "http://localhost:5173/",
+    origin: process.env.CLIENT_URL,
   })
 );
-//localhost:8080/foo.html
 app.use(express.static("public"));
-// middleware chain:
+
 app.use(json());
 app.use(morgan("dev"));
-app.use("/api/v1/users", usersRouter); //next(err)
+app.use("/api/v1/users", usersRouter);
 app.use("/api/v1/cards", cardsRouter);
 app.use(errorHandler);
 app.use(notFound);
@@ -32,6 +30,5 @@ app.use(notFound);
 const PORT = process.env.PORT ?? 8080;
 
 app.listen(process.env.PORT, () => {
-  // callback when the app is running:
   Logger.info(`App is running: http://localhost:${PORT}`);
 });

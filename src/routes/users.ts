@@ -5,6 +5,7 @@ import {
   validateIsBusiness,
   validateLogin,
   validateRegistration,
+  validateUpdateUser,
 } from "../middleware/validation";
 import { createUser, validateUser } from "../service/user-service";
 import { isAdmin } from "../middleware/permission/is-admin";
@@ -27,7 +28,7 @@ router.get("/", isAdmin, async (req, res, next) => {
 });
 
 //PUT update user
-router.put("/:id", isUser, validateRegistration, async (req, res, next) => {
+router.put("/:id", isUser, validateUpdateUser, async (req, res, next) => {
   try {
     req.body.password = await auth.hashPassword(req.body.password);
 

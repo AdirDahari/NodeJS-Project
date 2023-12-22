@@ -6,7 +6,6 @@ import { ICard, ICardInput } from "../@types/card";
 import { BizCardsError } from "../error/biz-cards-error";
 import { Card } from "../database/model/card";
 import { validateToken } from "../middleware/validate-token";
-import { isUser } from "../middleware/permission/is-user";
 import { isCardUser } from "../middleware/permission/is-card-user";
 import { isCardUserOrAdmin } from "../middleware/permission/is-card-user-or-admin";
 import { Logger } from "../logs/logger";

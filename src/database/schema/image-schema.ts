@@ -5,13 +5,13 @@ const imageSchema = new Schema<IImage>({
   alt: {
     type: String,
     minlength: 2,
-    maxlength: 200,
+    maxlength: 100,
     required: true,
   },
   url: {
     type: String,
-    minlength: 12,
-    maxlength: 200,
+    minlength: 5,
+    maxlength: 250,
     required: true,
   },
 });

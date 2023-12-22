@@ -4,7 +4,6 @@ import { auth } from "../../service/auth-service";
 import { User } from "../../database/model/user";
 import { BizCardsError } from "../../error/biz-cards-error";
 import { Card } from "../../database/model/card";
-import { ICard } from "../../@types/card";
 
 const isCardUserOrAdmin: RequestHandler = async (req, res, next) => {
   try {

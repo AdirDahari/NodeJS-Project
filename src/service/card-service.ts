@@ -1,4 +1,5 @@
 import { Card } from "../database/model/card";
+import { BizCardsError } from "../error/biz-cards-error";
 import { Logger } from "../logs/logger";
 import { ICardInput } from "./../@types/card.d";
 const createCard = async (data: ICardInput, userId: string) => {
@@ -21,6 +22,7 @@ const createCard = async (data: ICardInput, userId: string) => {
     return card.save();
   } catch (err) {
     Logger.error("Something worng...", err);
+    throw new BizCardsError("Create card failed...", 500);
   }
 };
 

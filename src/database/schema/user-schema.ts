@@ -19,21 +19,21 @@ const userSchema = new Schema<IUser>({
   phone: {
     required: true,
     type: String,
-    minlength: 9,
-    maxlength: 15,
+    minlength: 5,
+    maxlength: 20,
   },
   email: {
     unique: true,
     required: true,
     type: String,
-    minlength: 7,
-    maxlength: 20,
+    minlength: 5,
+    maxlength: 100,
   },
   password: {
     required: true,
     type: String,
-    minlength: 7,
-    maxlength: 100,
+    minlength: 5,
+    maxlength: 30,
   },
   isAdmin: {
     type: Boolean,

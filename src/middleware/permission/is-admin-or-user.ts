@@ -1,4 +1,4 @@
-import { RequestHandler, Request } from "express";
+import { RequestHandler } from "express";
 import { auth } from "../../service/auth-service";
 import { User } from "../../database/model/user";
 import { BizCardsError } from "../../error/biz-cards-error";
@@ -11,7 +11,6 @@ const isAdminOrUser: RequestHandler = async (req, res, next) => {
     const token = extractToken(req);
     const { email } = auth.verifyJWT(token);
 
-    //get user from database:
     const user = (await User.findOne({ email }).lean()) as IUser;
     req.user = user;
 

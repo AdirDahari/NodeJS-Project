@@ -4,7 +4,6 @@ import { BizCardsError } from "../../error/biz-cards-error";
 import { extractToken } from "../validate-token";
 import { auth } from "../../service/auth-service";
 import { User } from "../../database/model/user";
-import { ICard } from "../../@types/card";
 
 const isCardUser: RequestHandler = async (req, res, next) => {
   try {
