@@ -1,9 +1,7 @@
-Logger - where and when put Logger
 Status - put currect status to all res
 Update user PUT request - test it
-Joi and Schema - make sure validation currect
-BizNumber - uuid (update readme)
 Clean code - from routes
+Init data - cards
 
 
 --> login bonus - check tomer login user route <---

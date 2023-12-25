@@ -21,6 +21,7 @@ const router = Router();
 router.get("/", isAdmin, async (req, res, next) => {
   try {
     const allUsers = await User.find();
+    Logger.debug("Users found");
     res.json(allUsers);
   } catch (e) {
     next(e);
@@ -30,8 +31,6 @@ router.get("/", isAdmin, async (req, res, next) => {
 //PUT update user
 router.put("/:id", isUser, validateUpdateUser, async (req, res, next) => {
   try {
-    req.body.password = await auth.hashPassword(req.body.password);
-
     const savedUser = (await User.findByIdAndUpdate(
       { _id: req.params.id },
       req.body,
@@ -41,6 +40,7 @@ router.put("/:id", isUser, validateUpdateUser, async (req, res, next) => {
       throw new BizCardsError("User does not update", 401);
     }
     const { password, ...rest } = savedUser;
+    Logger.debug("User updated");
     res.json(rest);
   } catch (err) {
     next(err);
@@ -54,6 +54,7 @@ router.get("/:id", isAdminOrUser, async (req, res, next) => {
       throw new BizCardsError("User does not exist", 401);
     }
     const { password, ...rest } = req.user;
+    Logger.debug("User found");
     return res.json(rest);
   } catch (e) {
     next(e);
@@ -67,8 +68,8 @@ router.delete("/:id", isAdminOrUser, async (req, res, next) => {
     const deleteUser = (await User.findOneAndDelete({
       _id: id,
     }).lean()) as IUser;
-    Logger.verbose("deleted the user");
     const { password, ...rest } = deleteUser;
+    Logger.debug("User deleted");
     return res.json(rest);
   } catch (e) {
     next(e);
@@ -79,6 +80,7 @@ router.delete("/:id", isAdminOrUser, async (req, res, next) => {
 router.post("/", validateRegistration, async (req, res, next) => {
   try {
     const saved = await createUser(req.body as IUser);
+    Logger.debug("User created");
     res.status(201).json({ message: "Saved", user: saved });
   } catch (err) {
     next(err);
@@ -90,6 +92,7 @@ router.post("/login", validateLogin, async (req, res, next) => {
   try {
     const { email, password } = req.body as ILogin;
     const jwt = await validateUser(email, password);
+    Logger.debug("User logged in");
     res.json(jwt);
   } catch (e) {
     next(e);
@@ -109,6 +112,7 @@ router.patch("/:id", validateIsBusiness, isUser, async (req, res, next) => {
       throw new BizCardsError("User does not update", 401);
     }
     const { password, ...rest } = updateUser;
+    Logger.debug("User updated");
     res.json(rest);
   } catch (err) {
     next(err);

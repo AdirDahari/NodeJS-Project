@@ -10,7 +10,6 @@ const createUser = async (userData: IUser) => {
     user.password = await auth.hashPassword(user.password);
     return user.save();
   } catch (err) {
-    Logger.error("Something worng...", err);
     throw new BizCardsError("Create user failed...", 500);
   }
 };
@@ -23,7 +22,6 @@ const validateUser = async (email: string, password: string) => {
       throw new BizCardsError("Bad credentials", 401);
     }
 
-    //check the password:
     const isPasswordValid = await auth.validatePassword(
       password,
       user.password
@@ -37,7 +35,6 @@ const validateUser = async (email: string, password: string) => {
 
     return { jwt };
   } catch (err) {
-    Logger.error("Something worng...", err);
     throw new BizCardsError("Create user failed...", 500);
   }
 };

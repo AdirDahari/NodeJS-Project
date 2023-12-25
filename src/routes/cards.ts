@@ -21,7 +21,7 @@ router.post("/", isBusiness, validateCard, async (req, res, next) => {
       throw new BizCardsError("User must have an id", 500);
     }
     const savedCard = await createCard(req.body as ICardInput, userId);
-
+    Logger.debug("Card saved");
     return res.json({ card: savedCard });
   } catch (e) {
     next(e);
@@ -33,6 +33,7 @@ router.get("/", async (req, res, next) => {
   try {
     //move to service
     const cards = await Card.find();
+    Logger.debug("Cards founds");
     return res.json(cards);
   } catch (e) {
     next(e);
@@ -45,7 +46,7 @@ router.get("/my-cards", validateToken, async (req, res, next) => {
     const userId = req.user?._id!;
 
     const cards = await Card.find({ userId });
-
+    Logger.debug("Card found");
     return res.json(cards);
   } catch (e) {
     next(e);
@@ -58,7 +59,7 @@ router.get("/:id", async (req, res, next) => {
     const { id } = req.params;
 
     const card = await Card.findById(id);
-
+    Logger.debug("Card found");
     return res.json(card);
   } catch (e) {
     next(e);
@@ -73,6 +74,7 @@ router.put("/:id", validateCard, isCardUser, async (req, res, next) => {
       req.body,
       { new: true }
     );
+    Logger.debug("Card updated");
     return res.json(updateCard);
   } catch (err) {
     next(err);
@@ -92,6 +94,7 @@ router.patch("/:id", validateToken, async (req, res, next) => {
         { likes: likes },
         { new: true }
       ).lean()) as ICard;
+      Logger.debug("Card updated");
       return res.json(updatedLikes);
     }
     likes.splice(indexId, 1);
@@ -100,6 +103,7 @@ router.patch("/:id", validateToken, async (req, res, next) => {
       { likes: likes },
       { new: true }
     ).lean()) as ICard;
+    Logger.debug("Card updated");
     return res.json(updatedLikes);
   } catch (err) {
     next(err);
@@ -112,7 +116,7 @@ router.delete("/:id", isCardUserOrAdmin, async (req, res, next) => {
     const deletedCard = (await Card.deleteOne({
       _id: req.params.id,
     }).lean()) as ICard;
-    Logger.verbose("deleted the card");
+    Logger.debug("deleted the card");
     res.json(deletedCard);
   } catch (err) {
     next(err);
