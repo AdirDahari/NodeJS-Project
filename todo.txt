@@ -2,6 +2,7 @@ Status - put currect status to all res
 Update user PUT request - test it
 Clean code - from routes
 Init data - cards
+ReadMe - jwt payload
 
 
 --> login bonus - check tomer login user route <---
