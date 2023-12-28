@@ -18,7 +18,7 @@ const schema = Joi.object<IUser>({
     middle: Joi.string().max(100).allow(""),
   }).required(),
 
-  password: Joi.string().pattern(passwordRegex).min(5).max(30).required(),
+  password: Joi.string().pattern(passwordRegex).min(5).max(100).required(),
   phone: Joi.string().pattern(phoneRegex).min(5).max(20).required(),
   image: Joi.object<IImage>({
     alt: Joi.string().min(2).max(100).required(),

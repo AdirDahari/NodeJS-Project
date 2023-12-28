@@ -1,7 +1,5 @@
-Status - put currect status to all res
-Update user PUT request - test it
 Clean code - from routes
-Init data - cards
+connect prod db cloud
 ReadMe - jwt payload
 
 

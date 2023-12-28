@@ -11,7 +11,6 @@ import { createUser, validateUser } from "../service/user-service";
 import { isAdmin } from "../middleware/permission/is-admin";
 import { isAdminOrUser } from "../middleware/permission/is-admin-or-user";
 import { isUser } from "../middleware/permission/is-user";
-import { auth } from "../service/auth-service";
 import { Logger } from "../logs/logger";
 import { BizCardsError } from "../error/biz-cards-error";
 
@@ -22,7 +21,7 @@ router.get("/", isAdmin, async (req, res, next) => {
   try {
     const allUsers = await User.find();
     Logger.debug("Users found");
-    res.json(allUsers);
+    res.status(200).json(allUsers);
   } catch (e) {
     next(e);
   }
@@ -41,7 +40,7 @@ router.put("/:id", isUser, validateUpdateUser, async (req, res, next) => {
     }
     const { password, ...rest } = savedUser;
     Logger.debug("User updated");
-    res.json(rest);
+    res.status(200).json(rest);
   } catch (err) {
     next(err);
   }
@@ -55,7 +54,7 @@ router.get("/:id", isAdminOrUser, async (req, res, next) => {
     }
     const { password, ...rest } = req.user;
     Logger.debug("User found");
-    return res.json(rest);
+    return res.status(200).json(rest);
   } catch (e) {
     next(e);
   }
@@ -70,7 +69,7 @@ router.delete("/:id", isAdminOrUser, async (req, res, next) => {
     }).lean()) as IUser;
     const { password, ...rest } = deleteUser;
     Logger.debug("User deleted");
-    return res.json(rest);
+    return res.status(200).json(rest);
   } catch (e) {
     next(e);
   }
@@ -93,7 +92,7 @@ router.post("/login", validateLogin, async (req, res, next) => {
     const { email, password } = req.body as ILogin;
     const jwt = await validateUser(email, password);
     Logger.debug("User logged in");
-    res.json(jwt);
+    res.status(200).json(jwt);
   } catch (e) {
     next(e);
   }
@@ -113,7 +112,7 @@ router.patch("/:id", validateIsBusiness, isUser, async (req, res, next) => {
     }
     const { password, ...rest } = updateUser;
     Logger.debug("User updated");
-    res.json(rest);
+    res.status(200).json(rest);
   } catch (err) {
     next(err);
   }

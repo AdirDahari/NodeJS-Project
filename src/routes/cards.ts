@@ -18,13 +18,13 @@ router.post("/", isBusiness, validateCard, async (req, res, next) => {
     const userId = req.user?._id;
 
     if (!userId) {
-      throw new BizCardsError("User must have an id", 500);
+      throw new BizCardsError("User must have an id", 401);
     }
     const savedCard = await createCard(req.body as ICardInput, userId);
     Logger.debug("Card saved");
-    return res.json({ card: savedCard });
-  } catch (e) {
-    next(e);
+    return res.status(201).json({ card: savedCard });
+  } catch (err) {
+    next(err);
   }
 });
 
@@ -34,9 +34,9 @@ router.get("/", async (req, res, next) => {
     //move to service
     const cards = await Card.find();
     Logger.debug("Cards founds");
-    return res.json(cards);
-  } catch (e) {
-    next(e);
+    return res.status(200).json(cards);
+  } catch (err) {
+    next(err);
   }
 });
 
@@ -47,7 +47,7 @@ router.get("/my-cards", validateToken, async (req, res, next) => {
 
     const cards = await Card.find({ userId });
     Logger.debug("Card found");
-    return res.json(cards);
+    return res.status(200).json(cards);
   } catch (e) {
     next(e);
   }
@@ -60,7 +60,7 @@ router.get("/:id", async (req, res, next) => {
 
     const card = await Card.findById(id);
     Logger.debug("Card found");
-    return res.json(card);
+    return res.status(200).json(card);
   } catch (e) {
     next(e);
   }
@@ -75,7 +75,7 @@ router.put("/:id", validateCard, isCardUser, async (req, res, next) => {
       { new: true }
     );
     Logger.debug("Card updated");
-    return res.json(updateCard);
+    return res.status(200).json(updateCard);
   } catch (err) {
     next(err);
   }
@@ -95,7 +95,7 @@ router.patch("/:id", validateToken, async (req, res, next) => {
         { new: true }
       ).lean()) as ICard;
       Logger.debug("Card updated");
-      return res.json(updatedLikes);
+      return res.status(200).json(updatedLikes);
     }
     likes.splice(indexId, 1);
     const updatedLikes = (await Card.findByIdAndUpdate(
@@ -104,7 +104,7 @@ router.patch("/:id", validateToken, async (req, res, next) => {
       { new: true }
     ).lean()) as ICard;
     Logger.debug("Card updated");
-    return res.json(updatedLikes);
+    return res.status(200).json(updatedLikes);
   } catch (err) {
     next(err);
   }
@@ -117,7 +117,7 @@ router.delete("/:id", isCardUserOrAdmin, async (req, res, next) => {
       _id: req.params.id,
     }).lean()) as ICard;
     Logger.debug("deleted the card");
-    res.json(deletedCard);
+    res.status(200).json(deletedCard);
   } catch (err) {
     next(err);
   }

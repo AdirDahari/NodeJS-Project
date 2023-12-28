@@ -21,7 +21,7 @@ app.use(
 app.use(express.static("public"));
 
 app.use(json());
-app.use(morgan("dev"));
+app.use(morgan("common"));
 app.use("/api/v1/users", usersRouter);
 app.use("/api/v1/cards", cardsRouter);
 app.use(errorHandler);
@@ -29,6 +29,6 @@ app.use(notFound);
 
 const PORT = process.env.PORT ?? 8080;
 
-app.listen(process.env.PORT, () => {
+app.listen(PORT, () => {
   Logger.info(`App is running: http://localhost:${PORT}`);
 });

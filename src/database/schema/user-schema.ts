@@ -33,7 +33,7 @@ const userSchema = new Schema<IUser>({
     required: true,
     type: String,
     minlength: 5,
-    maxlength: 30,
+    maxlength: 100,
   },
   isAdmin: {
     type: Boolean,
