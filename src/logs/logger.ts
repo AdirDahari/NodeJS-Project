@@ -19,6 +19,10 @@ class Logger {
     if (process.env.NODE_ENV === "prod") return;
     console.log(chalk.magenta(messages));
   }
+
+  static connect(...messages: any[]) {
+    console.log(chalk.green(messages));
+  }
 }
 
 export { Logger };

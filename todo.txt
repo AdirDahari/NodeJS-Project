@@ -1,6 +1,6 @@
 Clean code - from routes
-connect prod db cloud
 ReadMe - jwt payload
+bonus - admin can change bizNumber
 
 
 --> login bonus - check tomer login user route <---
