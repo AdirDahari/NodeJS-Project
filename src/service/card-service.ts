@@ -1,6 +1,8 @@
+import { date } from "joi";
 import { Card } from "../database/model/card";
 import { BizCardsError } from "../error/biz-cards-error";
 import { ICardInput } from "./../@types/card.d";
+
 const createCard = async (data: ICardInput, userId: string) => {
   try {
     const card = new Card(data);
@@ -23,4 +25,21 @@ const createCard = async (data: ICardInput, userId: string) => {
   }
 };
 
-export { createCard };
+const updateBizNumber = async (bizNumber: number, cardId: string) => {
+  try {
+    const dbRes = await Card.findOne({ bizNumber: bizNumber });
+    if (dbRes) {
+      return null;
+    }
+
+    return Card.findByIdAndUpdate(
+      { _id: cardId },
+      { bizNumber: bizNumber },
+      { new: true }
+    );
+  } catch (err) {
+    throw new BizCardsError("Update bizNumber failed...", 500);
+  }
+};
+
+export { createCard, updateBizNumber };

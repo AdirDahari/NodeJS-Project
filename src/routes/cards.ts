@@ -1,18 +1,18 @@
 import { Router } from "express";
 import { isBusiness } from "../middleware/permission/is-business";
-import { validateCard } from "../middleware/validation";
-import { createCard } from "../service/card-service";
-import { ICard, ICardInput } from "../@types/card";
+import { validateBizNumber, validateCard } from "../middleware/validation";
+import { createCard, updateBizNumber } from "../service/card-service";
+import { IBizNumber, ICard, ICardInput } from "../@types/card";
 import { BizCardsError } from "../error/biz-cards-error";
 import { Card } from "../database/model/card";
 import { validateToken } from "../middleware/validate-token";
 import { isCardUser } from "../middleware/permission/is-card-user";
 import { isCardUserOrAdmin } from "../middleware/permission/is-card-user-or-admin";
 import { Logger } from "../logs/logger";
+import { isAdmin } from "../middleware/permission/is-admin";
 
 const router = Router();
 
-//POST Create card
 router.post("/", isBusiness, validateCard, async (req, res, next) => {
   try {
     const userId = req.user?._id;
@@ -28,7 +28,6 @@ router.post("/", isBusiness, validateCard, async (req, res, next) => {
   }
 });
 
-//GET All cards
 router.get("/", async (req, res, next) => {
   try {
     //move to service
@@ -40,7 +39,6 @@ router.get("/", async (req, res, next) => {
   }
 });
 
-//GET My cards
 router.get("/my-cards", validateToken, async (req, res, next) => {
   try {
     const userId = req.user?._id!;
@@ -53,7 +51,6 @@ router.get("/my-cards", validateToken, async (req, res, next) => {
   }
 });
 
-//GET Card by id
 router.get("/:id", async (req, res, next) => {
   try {
     const { id } = req.params;
@@ -66,7 +63,6 @@ router.get("/:id", async (req, res, next) => {
   }
 });
 
-//PUT Update user
 router.put("/:id", validateCard, isCardUser, async (req, res, next) => {
   try {
     const updateCard = await Card.findByIdAndUpdate(
@@ -81,7 +77,6 @@ router.put("/:id", validateCard, isCardUser, async (req, res, next) => {
   }
 });
 
-//PATCH Update likes card
 router.patch("/:id", validateToken, async (req, res, next) => {
   try {
     const { likes, _id } = (await Card.findById(req.params.id)) as ICard;
@@ -110,7 +105,6 @@ router.patch("/:id", validateToken, async (req, res, next) => {
   }
 });
 
-//DELETE Card by id
 router.delete("/:id", isCardUserOrAdmin, async (req, res, next) => {
   try {
     const deletedCard = (await Card.deleteOne({
@@ -122,5 +116,24 @@ router.delete("/:id", isCardUserOrAdmin, async (req, res, next) => {
     next(err);
   }
 });
+
+router.patch(
+  "/biz-number/:id",
+  isAdmin,
+  validateBizNumber,
+  async (req, res, next) => {
+    try {
+      const { bizNumber } = req.body as IBizNumber;
+      const updateBizNum = await updateBizNumber(bizNumber, req.params.id);
+      if (!updateBizNum) {
+        throw new BizCardsError("BizNumber already taken", 400);
+      }
+      Logger.debug("BizNumber updated");
+      res.status(200).json(updateBizNum);
+    } catch (err) {
+      next(err);
+    }
+  }
+);
 
 export { router as cardsRouter };

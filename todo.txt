@@ -1,6 +1,5 @@
-Clean code - from routes
+Clean code - delete requeste.json, todo
 ReadMe - jwt payload
-bonus - admin can change bizNumber
 
 
 --> login bonus - check tomer login user route <---

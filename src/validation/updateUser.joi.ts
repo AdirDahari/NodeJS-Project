@@ -1,6 +1,6 @@
 import Joi from "joi";
 import { IName, IUser, IAddress, IImage } from "../@types/user";
-import { passwordRegex, phoneRegex } from "./patterns";
+import { phoneRegex } from "./patterns";
 
 const schema = Joi.object<IUser>({
   address: Joi.object<IAddress>({

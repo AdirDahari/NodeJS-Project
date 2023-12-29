@@ -16,7 +16,6 @@ import { BizCardsError } from "../error/biz-cards-error";
 
 const router = Router();
 
-//GET all users
 router.get("/", isAdmin, async (req, res, next) => {
   try {
     const allUsers = await User.find();
@@ -27,7 +26,6 @@ router.get("/", isAdmin, async (req, res, next) => {
   }
 });
 
-//PUT update user
 router.put("/:id", isUser, validateUpdateUser, async (req, res, next) => {
   try {
     const savedUser = (await User.findByIdAndUpdate(
@@ -46,7 +44,6 @@ router.put("/:id", isUser, validateUpdateUser, async (req, res, next) => {
   }
 });
 
-//GET user by id
 router.get("/:id", isAdminOrUser, async (req, res, next) => {
   try {
     if (!req.user) {
@@ -60,7 +57,6 @@ router.get("/:id", isAdminOrUser, async (req, res, next) => {
   }
 });
 
-//DELETE user
 router.delete("/:id", isAdminOrUser, async (req, res, next) => {
   try {
     const { id } = req.params;
@@ -75,7 +71,6 @@ router.delete("/:id", isAdminOrUser, async (req, res, next) => {
   }
 });
 
-//POST new user
 router.post("/", validateRegistration, async (req, res, next) => {
   try {
     const saved = await createUser(req.body as IUser);
@@ -86,7 +81,6 @@ router.post("/", validateRegistration, async (req, res, next) => {
   }
 });
 
-//POST login
 router.post("/login", validateLogin, async (req, res, next) => {
   try {
     const { email, password } = req.body as ILogin;
@@ -98,7 +92,6 @@ router.post("/login", validateLogin, async (req, res, next) => {
   }
 });
 
-//PATCH update user isBusiness status
 router.patch("/:id", validateIsBusiness, isUser, async (req, res, next) => {
   try {
     const { isBusiness } = req.body as IIsBusiness;

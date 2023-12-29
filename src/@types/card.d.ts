@@ -17,3 +17,7 @@ export type ICard = ICardInput & {
   likes: string[];
   createdAt: Date;
 };
+
+export type IBizNumber = {
+  bizNumber: number;
+};

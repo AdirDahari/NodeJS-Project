@@ -20,9 +20,8 @@ const authService = {
 
     const payload = jwt.verify(token, secret);
 
-    return payload as IJWTPayload & {iat: number};
+    return payload as IJWTPayload & { iat: number };
   },
 };
 
-// export the entire object:
 export { authService as auth };
