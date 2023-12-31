@@ -18,7 +18,7 @@ NodeJS Project - build api with nodejs, express, mongodb
 
 ## Getting Started
 
-This project was build in visual studio code with javascript
+This project was build in visual studio code with javascript and typescript
 
 ### Prerequisites
 
@@ -29,11 +29,32 @@ Install nodejs to your local computer
 Step-by-step instructions on how to install dependencies and set up the project.
 
 ```bash
-# Clone the repository
+# `Clone the repository`
 git clone https://github.com/AdirDahari/HackerU-ShopApp-React.git
 
-# Install dependencies
+copy of the project
+
+# `Install dependencies`
 npm install
 
 when we download the project for the first time we must execute npm i to install all dependencies
+
+### `Run the project`
+npm watch
+
+Runs the app in the current mode (.env file) every change will automatic update the project, no need to stop the project and ran again
 ```
+
+### Folder Structure
+
+/public
+/src
+&nbsp/@types
+&nbsp/config
+&nbsp/database
+&nbsp/error
+&nbsp/logs
+&nbsp/middlewares
+&nbsp/routes
+&nbsp/service
+&nbsp/validation
