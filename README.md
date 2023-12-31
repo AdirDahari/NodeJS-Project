@@ -1,6 +1,6 @@
-# Project Name
+# Biz Card Business
 
-Short description or introduction of your project.
+NodeJS Project - build api with nodejs, express, mongodb
 
 ## Table of Contents
 
@@ -18,11 +18,11 @@ Short description or introduction of your project.
 
 ## Getting Started
 
-Explain how to get a copy of the project up and running on a local machine.
+This project was build in visual studio code with javascript
 
 ### Prerequisites
 
-List any software, tools, or libraries that need to be installed before running the project.
+Install nodejs to your local computer
 
 ### Installation
 
@@ -30,11 +30,10 @@ Step-by-step instructions on how to install dependencies and set up the project.
 
 ```bash
 # Clone the repository
-git clone https://github.com/your-username/your-project.git
-
-# Change directory
-cd your-project
+git clone https://github.com/AdirDahari/HackerU-ShopApp-React.git
 
 # Install dependencies
 npm install
+
+when we download the project for the first time we must execute npm i to install all dependencies
 ```
