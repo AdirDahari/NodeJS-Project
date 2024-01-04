@@ -74,8 +74,9 @@ router.delete("/:id", isAdminOrUser, async (req, res, next) => {
 router.post("/", validateRegistration, async (req, res, next) => {
   try {
     const saved = await createUser(req.body as IUser);
+    const { password, ...rest } = saved._doc!;
     Logger.debug("User created");
-    res.status(201).json({ message: "Saved", user: saved });
+    res.status(201).json({ message: "Saved", user: rest });
   } catch (err) {
     next(err);
   }
@@ -103,9 +104,9 @@ router.patch("/:id", validateIsBusiness, isUser, async (req, res, next) => {
     if (!updateUser) {
       throw new BizCardsError("User does not update", 401);
     }
-    const { password, ...rest } = updateUser;
+    const { isBusiness: isBiz } = updateUser;
     Logger.debug("User updated");
-    res.status(200).json(rest);
+    res.status(200).json({ isBusiness: isBiz });
   } catch (err) {
     next(err);
   }

@@ -63,4 +63,5 @@ In config folder change NODE_ENV variable from dev, test and prod. in prod mode 
 ### Extras
 
 - **`jwt`:** Response json with email only.
+- **`Update user`:** Update user not included email, password and isBusiness.
 - **`bonus`:** Admin can change bizNumber if the bizNumber is not already used.

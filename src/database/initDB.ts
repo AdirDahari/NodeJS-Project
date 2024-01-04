@@ -15,7 +15,6 @@ const initDB = async () => {
       const saved = await new User(user).save();
       Logger.verbose("Added user: ", saved);
     }
-
     const { _id } = (await User.findOne({ isAdmin: true })) as IUser;
     for (let card of cardsData) {
       const savedCard = await createCard(card as ICardInput, _id!);

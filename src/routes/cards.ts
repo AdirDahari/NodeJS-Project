@@ -30,7 +30,6 @@ router.post("/", isBusiness, validateCard, async (req, res, next) => {
 
 router.get("/", async (req, res, next) => {
   try {
-    //move to service
     const cards = await Card.find();
     Logger.debug("Cards founds");
     return res.status(200).json(cards);
@@ -83,6 +82,8 @@ router.patch("/:id", validateToken, async (req, res, next) => {
     const indexId = likes.indexOf(req.user?._id!);
 
     if (indexId === -1) {
+      console.log(likes);
+
       likes.push(req.user?._id!);
       const updatedLikes = (await Card.findByIdAndUpdate(
         { _id: _id },
