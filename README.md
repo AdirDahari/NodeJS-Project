@@ -65,3 +65,5 @@ In config folder change NODE_ENV variable from dev, test and prod. in prod mode 
 - **`jwt`:** Response json with email only.
 - **`Update user`:** Update user not included email, password and isBusiness.
 - **`bonus`:** Admin can change bizNumber if the bizNumber is not already used.
+- **`Users postman api link`:** https://documenter.getpostman.com/view/29582728/2s9YsGgsYT
+- **`Cards postman api link`:** https://documenter.getpostman.com/view/29582728/2s9YsGgt13
